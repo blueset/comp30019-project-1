@@ -203,9 +203,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 173598652}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05f43cf68fb374a52a101e2aef480721, type: 3}
+  m_Script: {fileID: 11500000, guid: 536b2dbced1af4ebca276e5dd137d0fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boundary: 0
+  mouseSensitvity: 5
+  moveSpeed: 5
+  rollSpeed: 100
 --- !u!1 &286151717
 GameObject:
   m_ObjectHideFlags: 0
