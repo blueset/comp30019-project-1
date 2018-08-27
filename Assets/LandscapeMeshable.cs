@@ -6,6 +6,7 @@ using UnityEngine;
 public class LandscapeMeshable : MonoBehaviour {
 
     public float maxHeight = 100f;
+    public float variation = 10f;
     public int detailLevel = 12;
     public Shader shader;
 
@@ -67,9 +68,11 @@ public class LandscapeMeshable : MonoBehaviour {
             }
 
         // Color
-        for (int i = 0; i < vertices.Count; i++)
+        for (int i = 0; i < vertices.Count; i++) {
             colors.Add(getColorByHeight(vertices[i].y,
                     minLandscapeHeight, maxLandscapeHeight));
+            //vertices[i] = new Vector3(vertices[i].x, 0, vertices[i].z);
+        }
         
         mesh.vertices = vertices.ToArray();
         mesh.triangles = triangles.ToArray();
@@ -82,6 +85,10 @@ public class LandscapeMeshable : MonoBehaviour {
 
     private float randomHeight() {
         return UnityEngine.Random.Range(-maxHeight, maxHeight);
+    }
+
+    private float randomVariation() {
+        return UnityEngine.Random.Range(-variation, variation);
     }
 
     private float[,] BuildHeightMap() {
@@ -118,7 +125,7 @@ public class LandscapeMeshable : MonoBehaviour {
                     result[i - 1, j + 1] +
                     result[i + 1, j + 1] +
                     result[i + 1, j - 1]
-                ) / 4f + randomHeight();
+                ) / 4f + randomVariation() * level;
 
         // Square step
         for (int i = 0; i < nextSize; i++)
@@ -140,7 +147,8 @@ public class LandscapeMeshable : MonoBehaviour {
                     result[i, j] += result[i, j + 1];
                     squareCnt++;
                 }
-                result[i, j] = result[i, j] / squareCnt + randomHeight();
+                result[i, j] = result[i, j] / squareCnt 
+                    + randomVariation() * level;
             }
 
         return DiamondSquare(result, level - 1);
@@ -148,6 +156,7 @@ public class LandscapeMeshable : MonoBehaviour {
 
     private Color getColorByHeight(float height, float minH, float maxH) {
         float percentage = (height - minH) / (maxH - minH);
+        //return Color.HSVToRGB(0f, 0f, percentage);
         if (percentage > 0.8f) return PEAK_COLOR;
         if (percentage > 0.2f) return MOUNTAIN_COLOR;
         return LAND_COLOR;
