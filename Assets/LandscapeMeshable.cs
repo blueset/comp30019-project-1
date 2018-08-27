@@ -7,6 +7,12 @@ public class LandscapeMeshable : MonoBehaviour {
 
     public float maxHeight = 100f;
     public int detailLevel = 12;
+    public Shader shader;
+
+    private Color LAND_COLOR = new Color(0.106f, 0.369f, 0.125f, 1.0f);
+    private Color MOUNTAIN_COLOR = new Color(0.196f, 0.256f, 0.284f, 1.0f);
+    private Color PEAK_COLOR = new Color(0.878f, 0.878f, 0.878f, 1.0f);
+
 
     // Use this for initialization
     void Start() {
@@ -14,7 +20,8 @@ public class LandscapeMeshable : MonoBehaviour {
         landscapeMesh.mesh = BuildLandscapeMesh(BuildHeightMap());
 
         MeshRenderer mRenderer = this.gameObject.AddComponent<MeshRenderer>();
-        mRenderer.material.shader = Shader.Find("Unlit/VertexColorShader");
+        // mRenderer.material.shader = Shader.Find("Unlit/VertexColorShader");
+        mRenderer.material.shader = shader;
     }
 
     // Update is called once per frame
@@ -29,11 +36,18 @@ public class LandscapeMeshable : MonoBehaviour {
         List<int> triangles = new List<int>();
         List<Color> colors = new List<Color>();
 
+        float minLandscapeHeight = float.MaxValue, maxLandscapeHeight = float.MinValue;
+
         for (int i = 0; i < dimension; i++)
-            for (int j = 0; j < dimension; j++)
+            for (int j = 0; j < dimension; j++) {
                 vertices.Add(new Vector3(i - dimension / 2,
                                          heightMap[i, j],
                                          j - dimension / 2));
+                minLandscapeHeight = Math.Min(heightMap[i, j], minLandscapeHeight);
+                maxLandscapeHeight = Math.Max(heightMap[i, j], maxLandscapeHeight);
+            }
+
+
 
         // triangle is in the order of
         // (i, j) - (i, j + 1) - (i + 1, j)
@@ -53,8 +67,9 @@ public class LandscapeMeshable : MonoBehaviour {
             }
 
         // Color
-        for (int i = 0; i < mesh.colors.Length; i++)
-            colors.Add(Color.gray);
+        for (int i = 0; i < vertices.Count; i++)
+            colors.Add(getColorByHeight(vertices[i].y,
+                    minLandscapeHeight, maxLandscapeHeight));
         
         mesh.vertices = vertices.ToArray();
         mesh.triangles = triangles.ToArray();
@@ -129,6 +144,13 @@ public class LandscapeMeshable : MonoBehaviour {
             }
 
         return DiamondSquare(result, level - 1);
+    }
+
+    private Color getColorByHeight(float height, float minH, float maxH) {
+        float percentage = (height - minH) / (maxH - minH);
+        if (percentage > 0.8f) return PEAK_COLOR;
+        if (percentage > 0.2f) return MOUNTAIN_COLOR;
+        return LAND_COLOR;
     }
 
 }
