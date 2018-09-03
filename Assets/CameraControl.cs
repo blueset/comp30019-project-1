@@ -5,12 +5,14 @@ using UnityEngine;
 public class CameraControl : MonoBehaviour {
 
     public float boundary;
-    public float mouseSensitvity = 5.0f;
+    public float mouseSpeed = 2.0f;
     public float moveSpeed = 5.0f;
-    public float rollSpeed = 100.0f;
 
-	// Use this for initialization
-	void Start () {
+    private float yaw = 0.0f;
+    private float pitch = 0.0f;
+
+    // Use this for initialization
+    void Start () {
 		
 	}
 	
@@ -18,6 +20,7 @@ public class CameraControl : MonoBehaviour {
 	void Update () {
 
         InputMouse();
+
         InputKeyboard();
 
 	}
@@ -26,31 +29,34 @@ public class CameraControl : MonoBehaviour {
 
         Vector3 moveVector = new Vector3(0, 0, 0);
 
-        if (Input.GetKey(KeyCode.W)) {  // W: forward
-            moveVector += this.transform.forward * moveSpeed * Time.deltaTime;
+        // Forward
+        if (Input.GetKey(KeyCode.W)) {
+            moveVector += transform.forward * moveSpeed * Time.deltaTime;
         }
-        if (Input.GetKey(KeyCode.S)) {  // S: backward
-            moveVector -= this.transform.forward * moveSpeed * Time.deltaTime;
+        // Backward
+        if (Input.GetKey(KeyCode.S)) {
+            moveVector -= transform.forward * moveSpeed * Time.deltaTime;
         }
-        if (Input.GetKey(KeyCode.A)) {  // A: left
+        // Left
+        if (Input.GetKey(KeyCode.A)) {
             moveVector -= transform.right * moveSpeed * Time.deltaTime;
         }
-        if (Input.GetKey(KeyCode.D)) {  // D: right
+        // Right
+        if (Input.GetKey(KeyCode.D)) {
             moveVector += transform.right * moveSpeed * Time.deltaTime;
         }
 
-        this.transform.localPosition += moveVector;
+        transform.localPosition += moveVector;
 
     }
 
     private void InputMouse() {
+        // Yaw
+        yaw += mouseSpeed * Input.GetAxis("Mouse X");
+        // Pitch
+        pitch -= mouseSpeed * Input.GetAxis("Mouse Y");
 
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitvity;
-        float mouseY = Input.GetAxis("Mouse Y") * -mouseSensitvity;
-
-        this.transform.Rotate(Vector3.up, mouseX);
-        this.transform.Rotate(Vector3.right, mouseY);
-
+        transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
     }
 
 }
