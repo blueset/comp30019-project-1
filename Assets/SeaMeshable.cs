@@ -48,7 +48,7 @@ public class SeaMeshable : MonoBehaviour {
 
         for (int i = 0; i < vertices.Count; i++) {
             triangles.Add(i);
-            colors.Add(Color.blue);
+            colors.Add(new Color(0.506f, 0.831f, 0.980f, 0.35f));
         }
         mesh.vertices = vertices.ToArray();
         mesh.triangles = triangles.ToArray();

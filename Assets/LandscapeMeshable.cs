@@ -9,10 +9,14 @@ public class LandscapeMeshable : MonoBehaviour {
     public float variation = 10f;
     public int detailLevel = 12;
     public Shader shader;
+    public PhysicMaterial physicMaterial;
+
+    public GameObject sea;
 
     private Color LAND_COLOR = new Color(0.106f, 0.369f, 0.125f, 1.0f);
     private Color MOUNTAIN_COLOR = new Color(0.196f, 0.256f, 0.284f, 1.0f);
     private Color PEAK_COLOR = new Color(0.878f, 0.878f, 0.878f, 1.0f);
+    private Color BEACH_COLOR = new Color(1f, 0.976f, 0.769f, 1.0f);
 
 
     // Use this for initialization
@@ -23,6 +27,14 @@ public class LandscapeMeshable : MonoBehaviour {
         MeshRenderer mRenderer = this.gameObject.AddComponent<MeshRenderer>();
         // mRenderer.material.shader = Shader.Find("Unlit/VertexColorShader");
         mRenderer.material.shader = shader;
+
+        transform.gameObject.AddComponent<MeshCollider>();
+        MeshCollider mCollider = transform.GetComponent<MeshCollider>();
+        mCollider.sharedMesh = landscapeMesh.mesh;
+        mCollider.material = physicMaterial;
+
+
+        Debug.Log(gameObject.GetComponent<Renderer>().bounds.size.x + " " + gameObject.GetComponent<Renderer>().bounds.size.z);
     }
 
     // Update is called once per frame
@@ -73,6 +85,10 @@ public class LandscapeMeshable : MonoBehaviour {
                     minLandscapeHeight, maxLandscapeHeight));
             //vertices[i] = new Vector3(vertices[i].x, 0, vertices[i].z);
         }
+
+        Vector3 seaPos = sea.transform.localPosition;
+        seaPos.y = (float) ((maxLandscapeHeight - minLandscapeHeight) * 0.25 + minLandscapeHeight);
+        sea.transform.localPosition = seaPos;
         
         mesh.vertices = vertices.ToArray();
         mesh.triangles = triangles.ToArray();
@@ -157,9 +173,9 @@ public class LandscapeMeshable : MonoBehaviour {
     private Color getColorByHeight(float height, float minH, float maxH) {
         float percentage = (height - minH) / (maxH - minH);
         //return Color.HSVToRGB(0f, 0f, percentage);
-        if (percentage > 0.8f) return PEAK_COLOR;
-        if (percentage > 0.2f) return MOUNTAIN_COLOR;
-        return LAND_COLOR;
+        if (percentage > 0.7f) return PEAK_COLOR;
+        if (percentage > 0.3f) return LAND_COLOR;
+        return BEACH_COLOR;
     }
 
 }
