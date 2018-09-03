@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CameraControl : MonoBehaviour {
 
+    public GameObject landscape;
+
     public float boundary;
     public float mouseSpeed = 2.0f;
     public float moveSpeed = 5.0f;
@@ -23,7 +25,19 @@ public class CameraControl : MonoBehaviour {
 
         InputKeyboard();
 
+        CheckBoundary();
+
 	}
+
+    private void InputMouse() {
+
+        // Yaw
+        yaw += mouseSpeed * Input.GetAxis("Mouse X");
+        // Pitch
+        pitch -= mouseSpeed * Input.GetAxis("Mouse Y");
+
+        transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
+    }
 
     private void InputKeyboard() {
 
@@ -50,13 +64,19 @@ public class CameraControl : MonoBehaviour {
 
     }
 
-    private void InputMouse() {
-        // Yaw
-        yaw += mouseSpeed * Input.GetAxis("Mouse X");
-        // Pitch
-        pitch -= mouseSpeed * Input.GetAxis("Mouse Y");
+    private void CheckBoundary() {
 
-        transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
+        // Boundary is the half of size on each side
+        boundary = landscape.GetComponent<Renderer>().bounds.size.x / 2;
+
+        float x = transform.position.x;
+        float y = transform.position.y;
+        float z = transform.position.z;
+
+        x = Mathf.Min(Mathf.Max(x, -boundary), boundary);
+        z = Mathf.Min(Mathf.Max(z, -boundary), boundary);
+
+        transform.position = new Vector3(x, y, z);
     }
 
 }

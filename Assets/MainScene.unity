@@ -208,10 +208,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 536b2dbced1af4ebca276e5dd137d0fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  landscape: {fileID: 2114130665}
   boundary: 0
-  mouseSensitvity: 5
+  mouseSpeed: 2
   moveSpeed: 5
-  rollSpeed: 100
 --- !u!65 &173598658
 BoxCollider:
   m_ObjectHideFlags: 0
