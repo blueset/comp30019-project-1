@@ -125,6 +125,8 @@ GameObject:
   - component: {fileID: 173598657}
   - component: {fileID: 173598654}
   - component: {fileID: 173598653}
+  - component: {fileID: 173598658}
+  - component: {fileID: 173598659}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -179,7 +181,7 @@ Camera:
   m_AllowMSAA: 1
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
-  m_OcclusionCulling: 1
+  m_OcclusionCulling: 0
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
 --- !u!4 &173598656
@@ -189,7 +191,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 173598652}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalPosition: {x: 0, y: 10, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -210,6 +212,33 @@ MonoBehaviour:
   mouseSensitvity: 5
   moveSpeed: 5
   rollSpeed: 100
+--- !u!65 &173598658
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 173598652}
+  m_Material: {fileID: 13400000, guid: c4be9961619b84c7c8b3326c24abcf69, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &173598659
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 173598652}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 2
+  m_Constraints: 112
+  m_CollisionDetection: 1
 --- !u!1 &286151717
 GameObject:
   m_ObjectHideFlags: 0
@@ -342,7 +371,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2114130669}
   - component: {fileID: 2114130666}
-  - component: {fileID: 2114130667}
   m_Layer: 0
   m_Name: Landscape
   m_TagString: Untagged
@@ -365,19 +393,8 @@ MonoBehaviour:
   variation: 1.5
   detailLevel: 6
   shader: {fileID: 4800000, guid: 1da44d38515f143edb2d28e8265aadba, type: 3}
+  physicMaterial: {fileID: 13400000, guid: c4be9961619b84c7c8b3326c24abcf69, type: 2}
   sea: {fileID: 930205771}
---- !u!65 &2114130667
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2114130665}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &2114130669
 Transform:
   m_ObjectHideFlags: 0
