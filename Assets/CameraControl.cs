@@ -4,19 +4,27 @@ using UnityEngine;
 
 public class CameraControl : MonoBehaviour {
 
-    public GameObject landscape;
+    public LandscapeMeshable landscape;
 
     public float boundary;
-    public float mouseSpeed = 2.0f;
+    public float mouseSpeed = 4.0f;
     public float moveSpeed = 5.0f;
-
-    private float yaw = 0.0f;
-    private float pitch = 0.0f;
 
     // Use this for initialization
     void Start () {
-		
-	}
+
+        // Boundary is the half of size on each side
+        // Size is (2 ^ detail level) in diamond square algorithm
+        boundary = Mathf.Pow(2, landscape.detailLevel) / 2;
+
+        // Camera default position
+        transform.position = new Vector3(boundary, 50, boundary);
+        transform.LookAt(Vector3.zero);
+
+        // Lock the mouse
+        Cursor.lockState = CursorLockMode.Locked;
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -25,23 +33,34 @@ public class CameraControl : MonoBehaviour {
 
         InputKeyboard();
 
-        CheckBoundary();
-
 	}
 
     private void InputMouse() {
 
         // Yaw
-        yaw += mouseSpeed * Input.GetAxis("Mouse X");
-        // Pitch
-        pitch -= mouseSpeed * Input.GetAxis("Mouse Y");
+        float yaw = mouseSpeed * Input.GetAxis("Mouse X");
+        yaw += transform.eulerAngles.y;
 
-        transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
+        // Pitch
+        float pitch = -mouseSpeed * Input.GetAxis("Mouse Y");
+        pitch += transform.eulerAngles.x;
+        // Restricted in -90 ~ 90 degrees
+        if (pitch <= 180.0f) {
+            pitch = Mathf.Min(pitch, 90.0f);
+        } else {
+            pitch = Mathf.Max(pitch, 270.0f);
+        }
+
+        // Roll
+        float roll = transform.eulerAngles.z;
+
+        transform.eulerAngles = new Vector3(pitch, yaw, roll);
+
     }
 
     private void InputKeyboard() {
 
-        Vector3 moveVector = new Vector3(0, 0, 0);
+        Vector3 moveVector = transform.localPosition;
 
         // Forward
         if (Input.GetKey(KeyCode.W)) {
@@ -60,23 +79,12 @@ public class CameraControl : MonoBehaviour {
             moveVector += transform.right * moveSpeed * Time.deltaTime;
         }
 
-        transform.localPosition += moveVector;
+        // Check the boundary
+        moveVector.x = Mathf.Min(Mathf.Max(moveVector.x, -boundary), boundary);
+        moveVector.z = Mathf.Min(Mathf.Max(moveVector.z, -boundary), boundary);
 
-    }
+        transform.position = moveVector;
 
-    private void CheckBoundary() {
-
-        // Boundary is the half of size on each side
-        boundary = landscape.GetComponent<Renderer>().bounds.size.x / 2;
-
-        float x = transform.position.x;
-        float y = transform.position.y;
-        float z = transform.position.z;
-
-        x = Mathf.Min(Mathf.Max(x, -boundary), boundary);
-        z = Mathf.Min(Mathf.Max(z, -boundary), boundary);
-
-        transform.position = new Vector3(x, y, z);
     }
 
 }
