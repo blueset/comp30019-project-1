@@ -8,6 +8,7 @@ public class SeaMeshable : MonoBehaviour {
     public float maxHeight = 100f;
     public int detailLevel = 12;
     public Shader shader;
+    public SunControl sun;
 
     private Color LAND_COLOR = new Color(0.106f, 0.369f, 0.125f, 1.0f);
     private Color MOUNTAIN_COLOR = new Color(0.196f, 0.256f, 0.284f, 1.0f);
@@ -26,6 +27,10 @@ public class SeaMeshable : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+
+        MeshRenderer mRenderer = this.gameObject.GetComponent<MeshRenderer>();
+        mRenderer.material.SetColor("_PointLightColor", this.sun.color);
+        mRenderer.material.SetVector("_PointLightPosition", this.sun.GetWorldPosition());
 
     }
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,14 +9,13 @@ public class LandscapeMeshable : MonoBehaviour {
     public int detailLevel = 12;
     public Shader shader;
     public PhysicMaterial physicMaterial;
-
+    public SunControl sun;
     public GameObject sea;
 
     private Color LAND_COLOR = new Color(0.106f, 0.369f, 0.125f, 1.0f);
     private Color MOUNTAIN_COLOR = new Color(0.196f, 0.256f, 0.284f, 1.0f);
     private Color PEAK_COLOR = new Color(0.878f, 0.878f, 0.878f, 1.0f);
     private Color BEACH_COLOR = new Color(1f, 0.976f, 0.769f, 1.0f);
-
 
     // Use this for initialization
     void Start() {
@@ -33,13 +31,16 @@ public class LandscapeMeshable : MonoBehaviour {
         mCollider.sharedMesh = landscapeMesh.mesh;
         mCollider.material = physicMaterial;
 
-
-        Debug.Log(gameObject.GetComponent<Renderer>().bounds.size.x + " " + gameObject.GetComponent<Renderer>().bounds.size.z);
     }
 
     // Update is called once per frame
     void Update() {
 
+        MeshRenderer mRenderer = this.gameObject.GetComponent<MeshRenderer>();
+
+        // Pass updated light positions to shader
+        mRenderer.material.SetColor("_PointLightColor", this.sun.color);
+        mRenderer.material.SetVector("_PointLightPosition", this.sun.GetWorldPosition());
     }
 
     private Mesh BuildLandscapeMesh(float[,] heightMap) {

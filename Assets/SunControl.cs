@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SunControl : MonoBehaviour {
 
+    public Color color;
     public float speed = 10.0f;
 
 	// Use this for initialization
@@ -17,5 +18,12 @@ public class SunControl : MonoBehaviour {
         transform.RotateAround(Vector3.zero, Vector3.right, speed * Time.deltaTime);
 
         transform.LookAt(Vector3.zero);
+
 	}
+
+    public Vector3 GetWorldPosition() {
+
+        return this.transform.position;
+    
+    }
 }
