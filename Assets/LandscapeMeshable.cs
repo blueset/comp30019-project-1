@@ -12,10 +12,9 @@ public class LandscapeMeshable : MonoBehaviour {
     public SunControl sun;
     public GameObject sea;
 
-    private Color LAND_COLOR = new Color(0.106f, 0.369f, 0.125f, 1.0f);
-    private Color MOUNTAIN_COLOR = new Color(0.196f, 0.256f, 0.284f, 1.0f);
-    private Color PEAK_COLOR = new Color(0.878f, 0.878f, 0.878f, 1.0f);
-    private Color BEACH_COLOR = new Color(1f, 0.976f, 0.769f, 1.0f);
+    public Color landColor = new Color(0.106f, 0.369f, 0.125f, 1.0f);
+    public Color peakColor = new Color(0.878f, 0.878f, 0.878f, 1.0f);
+    public Color beachColor = new Color(1f, 0.976f, 0.769f, 1.0f);
 
     // Use this for initialization
     void Start() {
@@ -174,9 +173,9 @@ public class LandscapeMeshable : MonoBehaviour {
     private Color getColorByHeight(float height, float minH, float maxH) {
         float percentage = (height - minH) / (maxH - minH);
         //return Color.HSVToRGB(0f, 0f, percentage);
-        if (percentage > 0.7f) return PEAK_COLOR;
-        if (percentage > 0.3f) return LAND_COLOR;
-        return BEACH_COLOR;
+        if (percentage > 0.7f) return peakColor;
+        if (percentage > 0.3f) return landColor;
+        return beachColor;
     }
 
 }

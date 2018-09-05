@@ -2,9 +2,12 @@ Project Implementation
 
 Landscape generation:
     - Using diamond-square algorithm
+    - Each iteration adds a smaller random value to the landscape to produce a 
+      more realistic
 
 Landscape colouring:
-    - Based on the generated landscape, set top 20% to white as snow, bottom 30% to yellow as sand
+    - Based on the generated landscape, set top 20% to white as snow, bottom 
+      30% to yellow as sand
 
 Sea generation:
     - Similar implementation in workshop for sea waves
